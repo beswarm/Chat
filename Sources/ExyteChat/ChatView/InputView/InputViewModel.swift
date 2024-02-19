@@ -116,7 +116,7 @@ final class InputViewModel: ObservableObject {
     }
 }
 
-private extension InputViewModel {
+extension InputViewModel {
 
     func validateDraft() {
         DispatchQueue.main.async { [weak self] in
