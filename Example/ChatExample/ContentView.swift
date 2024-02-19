@@ -19,6 +19,11 @@ struct ContentView: View {
                     NavigationLink("Simple example") {
                         ChatExampleView(title: "Simple example")
                     }
+                    
+                    NavigationLink("Push to Talk example") {
+                        PttChatExampleView(viewModel: PttChatViewModel(interactor: ModelChatInteractor(isActive: true)),
+                                    title: "Simple example")
+                    }
                 } header: {
                     Text("Basic examples")
                 }
@@ -28,4 +33,8 @@ struct ContentView: View {
         }
         .navigationViewStyle(.stack)
     }
+}
+
+#Preview {
+    ContentView()
 }

@@ -24,6 +24,9 @@
 		13F1C0F2286ADD8900D25D8A /* MockAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F1C0F1286ADD8900D25D8A /* MockAttachment.swift */; };
 		5B35D75C2A989D70006A1A67 /* ExyteChat in Frameworks */ = {isa = PBXBuildFile; productRef = 5B35D75B2A989D70006A1A67 /* ExyteChat */; };
 		5B6D3A732987D85A00765148 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6D3A722987D85A00765148 /* Color+Extension.swift */; };
+		E3CC3F4E2B830F6500E96D3F /* PttChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CC3F4D2B830F6500E96D3F /* PttChatViewModel.swift */; };
+		E3CC3F502B831BCB00E96D3F /* PttChatExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CC3F4F2B831BCB00E96D3F /* PttChatExampleView.swift */; };
+		E3CC3F522B8355E500E96D3F /* ModelChatInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CC3F512B8355E500E96D3F /* ModelChatInteractor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -59,6 +62,9 @@
 		13F1C0EE286AC86200D25D8A /* ChatExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatExampleView.swift; sourceTree = "<group>"; };
 		13F1C0F1286ADD8900D25D8A /* MockAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAttachment.swift; sourceTree = "<group>"; };
 		5B6D3A722987D85A00765148 /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
+		E3CC3F4D2B830F6500E96D3F /* PttChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PttChatViewModel.swift; sourceTree = "<group>"; };
+		E3CC3F4F2B831BCB00E96D3F /* PttChatExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PttChatExampleView.swift; sourceTree = "<group>"; };
+		E3CC3F512B8355E500E96D3F /* ModelChatInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelChatInteractor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +104,8 @@
 				13DF043128647C070043DBBC /* ChatExampleViewModel.swift */,
 				13F1C0EE286AC86200D25D8A /* ChatExampleView.swift */,
 				13DF042C2864790B0043DBBC /* ContentView.swift */,
+				E3CC3F4D2B830F6500E96D3F /* PttChatViewModel.swift */,
+				E3CC3F4F2B831BCB00E96D3F /* PttChatExampleView.swift */,
 				1376F7B3286471A80016CD1B /* Data */,
 				1376F7B4286471B30016CD1B /* Drivers */,
 				1376133C28782F7C00E7CF67 /* Extension */,
@@ -119,6 +127,7 @@
 			children = (
 				135987BC2869F6F2006388CF /* ChatInteractorProtocol.swift */,
 				135987BE2869F704006388CF /* MockChatInteractor.swift */,
+				E3CC3F512B8355E500E96D3F /* ModelChatInteractor.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -264,8 +273,11 @@
 			files = (
 				13DF043228647C070043DBBC /* ChatExampleViewModel.swift in Sources */,
 				5B6D3A732987D85A00765148 /* Color+Extension.swift in Sources */,
+				E3CC3F502B831BCB00E96D3F /* PttChatExampleView.swift in Sources */,
+				E3CC3F522B8355E500E96D3F /* ModelChatInteractor.swift in Sources */,
 				13E17B6F2869E983004DF140 /* MockChatData.swift in Sources */,
 				1376F7BB286472530016CD1B /* ChatError.swift in Sources */,
+				E3CC3F4E2B830F6500E96D3F /* PttChatViewModel.swift in Sources */,
 				135987B82869F369006388CF /* Lorem.swift in Sources */,
 				135987BA2869F3AE006388CF /* MockMessage.swift in Sources */,
 				1376133E28782F8E00E7CF67 /* Date+Random.swift in Sources */,
@@ -406,7 +418,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"ChatExample/Preview Content\"";
-				DEVELOPMENT_TEAM = FZXCM5CJ7P;
+				DEVELOPMENT_TEAM = L9KGBJ6986;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ChatExample/Info.plist;
@@ -440,12 +452,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"ChatExample/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = FZXCM5CJ7P;
+				DEVELOPMENT_TEAM = L9KGBJ6986;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ChatExample/Info.plist;
@@ -465,7 +475,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.exyte.example.chat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Chat example AppStore";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

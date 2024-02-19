@@ -33,6 +33,7 @@ final class RecordingPlayer: ObservableObject {
         self.recording = recording
         if let url = recording.url {
             setupPlayer(for: url, trackDuration: recording.duration)
+            print("playing \(url.absoluteString)")
             play()
         }
     }
@@ -95,7 +96,7 @@ final class RecordingPlayer: ObservableObject {
         }
 
         timeObserver = player?.addPeriodicTimeObserver(
-            forInterval: CMTime(seconds: 0.2, preferredTimescale: 10),
+            forInterval: CMTime(seconds: 0.2, preferredTimescale: 100),
             queue: DispatchQueue.main
         ) { [weak self] time in
             guard let item = self?.player?.currentItem, !item.duration.seconds.isNaN else { return }

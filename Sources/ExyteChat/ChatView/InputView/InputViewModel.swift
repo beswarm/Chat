@@ -5,11 +5,11 @@
 import Foundation
 import Combine
 import ExyteMediaPicker
+    
 
 final class InputViewModel: ObservableObject {
-    
-    @Published var attachments = InputViewAttachments()
     @Published var state: InputViewState = .empty
+    @Published var attachments = InputViewAttachments()
 
     @Published var showPicker = false
     @Published var mediaPickerMode = MediaPickerMode.photos
@@ -116,7 +116,7 @@ final class InputViewModel: ObservableObject {
     }
 }
 
-extension InputViewModel {
+private extension InputViewModel {
 
     func validateDraft() {
         DispatchQueue.main.async { [weak self] in
