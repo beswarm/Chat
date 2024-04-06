@@ -20,10 +20,10 @@ final class Recorder {
     private var soundSamples: [CGFloat] = []
 
     var isAllowedToRecordAudio: Bool {
-//        print("audioSession: \(audioSession.recordPermission == .undetermined)")
-        if audioSession.recordPermission == .undetermined {
-            return true
-        }
+        print("audioSession: \(audioSession.recordPermission.rawValue)")
+//        if audioSession.recordPermission == .undetermined {
+//            return true
+//        }
         return audioSession.recordPermission == .granted
     }
 
@@ -31,15 +31,19 @@ final class Recorder {
         audioRecorder?.isRecording ?? false
     }
 
-    func startRecording(durationProgressHandler: @escaping ProgressHandler) async -> URL? {
+    func startRecording(durationProgressHandler: @escaping ProgressHandler) async throws -> URL? {
         if !isAllowedToRecordAudio {
             let granted = await audioSession.requestRecordPermission()
             if granted {
                 print("granted yes")
                 return startRecordingInternal(durationProgressHandler)
+            } else {
+                print("granted no")
+                           // Handle permission denied
+                throw NSError(domain: "com.yourapp.error", code: 1, userInfo: ["message": "Microphone permission denied"])
             }
-            return nil
         } else {
+            print("startRecordingInternal")
             return startRecordingInternal(durationProgressHandler)
         }
     }

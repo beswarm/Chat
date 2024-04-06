@@ -56,15 +56,15 @@ struct PttInputView: View {
                 .frame(height: 48)
                 .background {
                     RoundedRectangle(cornerRadius: 18)
-//                        .fill(fieldBackgroundColor)
+                    //                        .fill(fieldBackgroundColor)
                         .fill(viewModel.state == .isRecordingHold ? Color.clear : fieldBackgroundColor )
-//                        .fill(.blue)
+                    //                        .fill(.blue)
                 }
                 .foregroundColor(.black)
-//                .background(Color.blue)
+                //                .background(Color.blue)
                 .cornerRadius(10)
                 .padding(.trailing, 3)
-
+                
                 rigthOutsideButton
             }
             
@@ -80,8 +80,8 @@ struct PttInputView: View {
     @ViewBuilder
     var leftView: some View {
         
-        Group {
-            if [.isRecordingTap, .isRecordingHold, .hasRecording, .playingRecording, .pausedRecording].contains(state) {
+        if [.isRecordingTap, .isRecordingHold, .hasRecording, .playingRecording, .pausedRecording].contains(state) {
+            Group {
                 if textAndAudioOnly {
                     Button {
                         onAction(.deleteRecord)
@@ -94,10 +94,14 @@ struct PttInputView: View {
                 } else {
                     deleteRecordButton
                 }
-            } else {
+            }
+            .viewSize(24)
+            .padding(EdgeInsets(top: 12, leading: 8, bottom: 12, trailing: 0))
+        } else {
+            Group {
                 if textAndAudioOnly {
                     Color.clear
-//                        .frame(width: 12, height: 1)
+                        .frame(width: 8, height: 1)
                 } else {
                     switch style {
                     case .message:
@@ -107,15 +111,14 @@ struct PttInputView: View {
                             addButton
                         } else {
                             Color.clear
-//                                .frame(width: 12, height: 1)
+                            //                                .frame(width: 12, height: 1)
                         }
                     }
                 }
             }
+            .viewSize(4)
+            .padding(EdgeInsets(top: 12, leading: 8, bottom: 12, trailing: 0))
         }
-        .viewSize(24)
-        .padding(EdgeInsets(top: 12, leading: 8, bottom: 12, trailing: 0))
-
     }
     
     @ViewBuilder
@@ -469,7 +472,15 @@ struct PttInputView: View {
             if (viewModel.state == .isRecordingHold ) {
                 SoundWaveView(strokeColor: theme.colors.recordDot)
             } else {
-                Text("Push To Talk2")
+                if viewModel.permissionDenied {
+                    Text("Record Permission denied")
+                        .foregroundStyle(.red)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.8)
+                    
+                } else {
+                    Text("Push To Talk")
+                }
             }
             Spacer()
         }

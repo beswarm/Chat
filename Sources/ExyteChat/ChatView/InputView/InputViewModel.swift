@@ -15,6 +15,7 @@ final class InputViewModel: ObservableObject {
     @Published var mediaPickerMode = MediaPickerMode.photos
 
     @Published var showActivityIndicator = false
+    @Published var permissionDenied  = false
 
     var recordingPlayer: RecordingPlayer?
     var didSendMessage: ((DraftMessage) -> Void)?
@@ -104,16 +105,22 @@ final class InputViewModel: ObservableObject {
         }
         Task { @MainActor in
             attachments.recording = Recording()
-            let url = await recorder.startRecording { duration, samples in
-                DispatchQueue.main.async { [weak self] in
-                    self?.attachments.recording?.duration = duration
-                    self?.attachments.recording?.waveformSamples = samples
+            do {
+                let url = try await recorder.startRecording { duration, samples in
+                    DispatchQueue.main.async { [weak self] in
+                        self?.attachments.recording?.duration = duration
+                        self?.attachments.recording?.waveformSamples = samples
+                    }
                 }
+                if state == .waitingForRecordingPermission {
+                    state = .isRecordingTap
+                }
+                attachments.recording?.url = url
+            } catch (let error) {
+                print("\(error)")
+                self.permissionDenied = true
+                return
             }
-            if state == .waitingForRecordingPermission {
-                state = .isRecordingTap
-            }
-            attachments.recording?.url = url
         }
     }
 }
