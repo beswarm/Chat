@@ -8,46 +8,60 @@
 import SwiftUI
 
 struct RecordWaveformWithButtons: View {
-
+    
     @Environment(\.chatTheme) private var theme
-
+    
     @StateObject var recordPlayer = RecordingPlayer()
-
+    
     var recording: Recording
-
+    
     var colorButton: Color
     var colorButtonBg: Color
     var colorWaveform: Color
-
+    
     var duration: Int {
         max(Int((recordPlayer.secondsLeft != 0 ? recordPlayer.secondsLeft : recording.duration) - 0.5), 0)
     }
-
+    
     var body: some View {
-        HStack(spacing: 12) {
-            Group {
-                if recordPlayer.playing {
-                    theme.images.message.pauseAudio
-                        .renderingMode(.template)
-                } else {
-                    theme.images.message.playAudio
-                        .renderingMode(.template)
+        VStack(alignment: .leading) {
+            HStack(alignment: .bottom, spacing: 12) {
+                HStack {
+                    Group {
+                        if recordPlayer.playing {
+                            theme.images.message.pauseAudio
+                                .renderingMode(.template)
+                        } else {
+                            theme.images.message.playAudio
+                                .renderingMode(.template)
+                        }
+                    }
+                    .foregroundColor(colorButton)
+                    .viewSize(36)
+                    .circleBackground(colorButtonBg)
+                    .onTapGesture {
+                        recordPlayer.togglePlay(recording)
+                    }
+                    
+                    Text(DateFormatter.timeString(duration))
+                        .font(.headline)
+                        .monospacedDigit()
+                        .foregroundColor(colorWaveform)
+                    
                 }
-            }
-            .foregroundColor(colorButton)
-            .viewSize(40)
-            .circleBackground(colorButtonBg)
-            .onTapGesture {
-                recordPlayer.togglePlay(recording)
-            }
-            
-            VStack(alignment: .leading, spacing: 5) {
+                .padding(.trailing)
+                
+                //            VStack(alignment: .leading, spacing: 5) {
                 RecordWaveformPlaying(samples: recording.waveformSamples, progress: recordPlayer.progress, color: colorWaveform, addExtraDots: false)
-                Text(DateFormatter.timeString(duration))
-                    .font(.caption2)
-                    .monospacedDigit()
-                    .foregroundColor(colorWaveform)
+                
+                Spacer()
+                //            }
             }
+            .frame(height: 42)
+            
+            Text(recording.transcribedText ?? "text not avaiable")
+                .multilineTextAlignment(.leading)
+       
         }
     }
 }

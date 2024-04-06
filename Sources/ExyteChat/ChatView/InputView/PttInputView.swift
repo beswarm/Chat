@@ -47,7 +47,7 @@ struct PttInputView: View {
     var body: some View {
         VStack {
             viewOnTop
-            HStack(alignment: .bottom, spacing: 10) {
+            HStack(alignment: .bottom, spacing: 0) {
                 HStack(alignment: .bottom, spacing: 0) {
                     leftView
                     middleView
@@ -56,15 +56,15 @@ struct PttInputView: View {
                 .frame(height: 48)
                 .background {
                     RoundedRectangle(cornerRadius: 18)
-                        .fill(fieldBackgroundColor)
+//                        .fill(fieldBackgroundColor)
+                        .fill(viewModel.state == .isRecordingHold ? Color.clear : fieldBackgroundColor )
 //                        .fill(.blue)
                 }
                 .foregroundColor(.black)
 //                .background(Color.blue)
                 .cornerRadius(10)
+                .padding(.trailing, 3)
 
-                
-                
                 rigthOutsideButton
             }
             
@@ -80,35 +80,42 @@ struct PttInputView: View {
     @ViewBuilder
     var leftView: some View {
         
-        if [.isRecordingTap, .isRecordingHold, .hasRecording, .playingRecording, .pausedRecording].contains(state) {
-            if textAndAudioOnly {
-                Button {
-                    onAction(.deleteRecord)
-                } label: {
-                    theme.images.recordAudio.deleteRecord
-                        .viewSize(24)
-                        .padding(EdgeInsets(top: 12, leading: 8, bottom: 12, trailing: 0))
+        Group {
+            if [.isRecordingTap, .isRecordingHold, .hasRecording, .playingRecording, .pausedRecording].contains(state) {
+                if textAndAudioOnly {
+                    Button {
+                        onAction(.deleteRecord)
+                    } label: {
+                        theme.images.recordAudio.deleteRecord
+                        //                        .viewSize(24)
+                        //                        .padding(EdgeInsets(top: 12, leading: 8, bottom: 12, trailing: 0))
+                    }
+                    .frameGetter($deleteRecordFrame)
+                } else {
+                    deleteRecordButton
                 }
-                .frameGetter($deleteRecordFrame)
             } else {
-                deleteRecordButton
-            }
-        } else {
-            if textAndAudioOnly {
-                Color.clear.frame(width: 12, height: 1)
-            } else {
-                switch style {
-                case .message:
-                    attachButton
-                case .signature:
-                    if viewModel.mediaPickerMode == .cameraSelection {
-                        addButton
-                    } else {
-                        Color.clear.frame(width: 12, height: 1)
+                if textAndAudioOnly {
+                    Color.clear
+//                        .frame(width: 12, height: 1)
+                } else {
+                    switch style {
+                    case .message:
+                        attachButton
+                    case .signature:
+                        if viewModel.mediaPickerMode == .cameraSelection {
+                            addButton
+                        } else {
+                            Color.clear
+//                                .frame(width: 12, height: 1)
+                        }
                     }
                 }
             }
         }
+        .viewSize(24)
+        .padding(EdgeInsets(top: 12, leading: 8, bottom: 12, trailing: 0))
+
     }
     
     @ViewBuilder
@@ -123,21 +130,7 @@ struct PttInputView: View {
 //                swipeToCancel
             default:
                 if emptyDefaultToAudio {
-                    HStack {
-                        Spacer()
-                        Text("Push To Talk")
-                        Spacer()
-                    }
-                    .gesture(
-                        DragGesture(minimumDistance: 0.0)
-                            .onChanged{ _ in
-                                self.holdToRecordStart()
-                            }
-                            .onEnded { _ in
-                                self.holdToRecordEnd()
-                                print("end")
-                            }
-                        )
+                    pushToTalk
                 } else {
                     TextInputView(text: $viewModel.attachments.text, inputFieldId: inputFieldId, style: style)
                 }
@@ -148,35 +141,40 @@ struct PttInputView: View {
     
     @ViewBuilder
     var rightView: some View {
-        Group {
-            switch state {
-            case .waitingForRecordingPermission:
-                if case .message = style {
-                    Color.clear
-//                        .frame(width: 8, height: 1)
-//                        .padding(EdgeInsets(top: 12, leading: 8, bottom: 12, trailing: 12))
-//                    cameraButton
-                }
-            case .isRecordingHold, .isRecordingTap:
-                recordDurationInProcess
-            case .hasRecording:
-                recordDuration
-            case .playingRecording, .pausedRecording:
-                recordDurationLeft
-            default:
-//                Color.clear.frame(width: 8, height: 1)
-                Button {
-                    withAnimation {
-                        emptyDefaultToAudio.toggle()
+        VStack(alignment:.trailing) {
+//            Spacer()
+            Group {
+                switch state {
+                case .waitingForRecordingPermission:
+                    if case .message = style {
+                        Color.clear
+                        //                        .frame(width: 8, height: 1)
+                        //                        .padding(EdgeInsets(top: 12, leading: 8, bottom: 12, trailing: 12))
+                        //                    cameraButton
                     }
-                }  label: {
-                    Image(systemName: emptyDefaultToAudio ?  "wave.3.left.circle": "keyboard" )
-                        .viewSize(48)
+                case .isRecordingHold, .isRecordingTap:
+                    recordDurationInProcess
+                case .hasRecording:
+                    recordDuration
+                case .playingRecording, .pausedRecording:
+                    recordDurationLeft
+                default:
+                    //                Color.clear.frame(width: 8, height: 1)
+                    Button {
+                        withAnimation {
+                            emptyDefaultToAudio.toggle()
+                        }
+                    }  label: {
+                        Image(systemName: emptyDefaultToAudio ?  "wave.3.left.circle": "keyboard" )
+                            .viewSize(18)
+                        //                        .viewSize(48)
+                    }
                 }
             }
+            //        .frame(minHeight: 48)
+//            .padding(.trailing)
         }
-//        .frame(minHeight: 48)
-        .frame(height: 48)
+        .frame(width: 48, height: 48)
     }
     
     @ViewBuilder
@@ -293,9 +291,9 @@ struct PttInputView: View {
             onAction(.add)
         } label: {
             theme.images.inputView.add
-                .viewSize(24)
                 .circleBackground(theme.colors.addButtonBackground)
-                .padding(EdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 8))
+//                .viewSize(24)
+//                .padding(EdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 8))
         }
     }
     
@@ -331,8 +329,9 @@ struct PttInputView: View {
             onAction(.deleteRecord)
         } label: {
             theme.images.recordAudio.deleteRecord
-                .viewSize(24)
-                .padding(EdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 8))
+//                .viewSize(24)
+//                .padding(EdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 8))
+//                .padding(EdgeInsets(top: 12, leading: 8, bottom: 12, trailing: 0))
         }
         .frameGetter($deleteRecordFrame)
     }
@@ -398,7 +397,7 @@ struct PttInputView: View {
     }
     
     var recordDurationInProcess: some View {
-        HStack {
+        HStack(spacing: 1) {
             Circle()
                 .foregroundColor(theme.colors.recordDot)
                 .viewSize(6)
@@ -408,20 +407,24 @@ struct PttInputView: View {
     
     var recordDuration: some View {
         Text(DateFormatter.timeString(Int(viewModel.attachments.recording?.duration ?? 0)))
+            .multilineTextAlignment(.center)
             .foregroundColor(theme.colors.textLightContext)
             .opacity(0.6)
             .font(.caption2)
-            .monospacedDigit()
-            .padding(.trailing, 12)
+            .frame(maxWidth: .infinity, alignment: .center)
+//            .monospacedDigit()
+//            .padding(.trailing, 12)
     }
     
     var recordDurationLeft: some View {
         Text(DateFormatter.timeString(Int(recordingPlayer.secondsLeft)))
+            .multilineTextAlignment(.center)
             .foregroundColor(theme.colors.textLightContext)
             .opacity(0.6)
             .font(.caption2)
-            .monospacedDigit()
-            .padding(.trailing, 12)
+            .frame(maxWidth: .infinity, alignment: .center)
+//            .monospacedDigit()
+//            .padding(.trailing, 12)
     }
     
     var playRecordButton: some View {
@@ -461,42 +464,26 @@ struct PttInputView: View {
     
     @ViewBuilder
     var pushToTalk: some View {
-//        HStack {
-//            Spacer()
-//            Button {
-//                onAction(.deleteRecord)
-//            } label: {
-//                HStack {
-//                    theme.images.recordAudio.cancelRecord
-//                    Text("Cancel")
-//                        .font(.footnote)
-//                        .foregroundColor(theme.colors.textLightContext)
-//                }
-//            }
-//            Spacer()
-//        }
-        
         HStack {
             Spacer()
-            
-            Text("Push To Talk")
+            if (viewModel.state == .isRecordingHold ) {
+                SoundWaveView(strokeColor: theme.colors.recordDot)
+            } else {
+                Text("Push To Talk2")
+            }
             Spacer()
         }
-        .foregroundColor(.white)
-        .background(Color.blue)
-        .cornerRadius(10)
-        .frame(height: 48)
-        
         .gesture(
-            LongPressGesture(minimumDuration: 0.01)
+            DragGesture(minimumDistance: 0.0)
                 .onChanged{ _ in
-                    viewModel.state = .isRecordingHold
+                    print("holdToRecordStart")
+                    self.holdToRecordStart()
                 }
                 .onEnded { _ in
-                    viewModel.state = .empty
+                    self.holdToRecordEnd()
+                    print("end")
                 }
-            )
-        
+        )
     }
     
     var fieldBackgroundColor: Color {
@@ -603,5 +590,85 @@ struct PttInputView: View {
 }
 
 
+struct Wave: Shape {
+    // allow SwiftUI to animate the wave phase
+    var animatableData: Double {
+        get { phase }
+        set { self.phase = newValue }
+    }
 
+    // how high our waves should be
+    var strength: Double
 
+    // how frequent our waves should be
+    var frequency: Double
+
+    // how much to offset our waves horizontally
+    var phase: Double
+
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath()
+
+        // calculate some important values up front
+        let width = Double(rect.width)
+        let height = Double(rect.height)
+        let midWidth = width / 2
+        let midHeight = height / 2
+        let oneOverMidWidth = 1 / midWidth
+
+        // split our total width up based on the frequency
+        let wavelength = width / frequency
+
+        // start at the left center
+        path.move(to: CGPoint(x: 0, y: midHeight))
+
+        // now count across individual horizontal points one by one
+        for x in stride(from: 0, through: width, by: 1) {
+            // find our current position relative to the wavelength
+            let relativeX = x / wavelength
+
+            // find how far we are from the horizontal center
+            let distanceFromMidWidth = x - midWidth
+
+            // bring that into the range of -1 to 1
+            let normalDistance = oneOverMidWidth * distanceFromMidWidth
+
+            let parabola = -(normalDistance * normalDistance) + 1
+
+            // calculate the sine of that position, adding our phase offset
+            let sine = sin(relativeX + phase)
+
+            // multiply that sine by our strength to determine final offset, then move it down to the middle of our view
+            let y = parabola * strength * sine + midHeight
+
+            // add a line to here
+            path.addLine(to: CGPoint(x: x, y: y))
+        }
+
+        return Path(path.cgPath)
+    }
+}
+
+struct SoundWaveView: View {
+    @State private var phase = 0.0
+    var strokeColor: Color = .red
+
+    var body: some View {
+        ZStack {
+            ForEach(0..<1) { i in
+                Wave(strength: 30, frequency: 60, phase: self.phase)
+//                    .stroke(Color.blue.opacity(Double(i) / 10), lineWidth: 5)
+                    .stroke(self.strokeColor, lineWidth: 5)
+                    .offset(x: CGFloat(i) * 10)
+                    .padding(.vertical)
+            }
+        }
+//        .background(Color.blue)
+//        .edgesIgnoringSafeArea(.all)
+        .onAppear {
+            withAnimation(Animation.linear(duration: 1).repeatForever(autoreverses: false)) {
+                self.phase = .pi * 2
+            }
+        }
+    }
+}

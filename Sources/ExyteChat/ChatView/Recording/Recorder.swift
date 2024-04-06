@@ -20,7 +20,11 @@ final class Recorder {
     private var soundSamples: [CGFloat] = []
 
     var isAllowedToRecordAudio: Bool {
-        audioSession.recordPermission == .granted
+//        print("audioSession: \(audioSession.recordPermission == .undetermined)")
+        if audioSession.recordPermission == .undetermined {
+            return true
+        }
+        return audioSession.recordPermission == .granted
     }
 
     var isRecording: Bool {
@@ -31,6 +35,7 @@ final class Recorder {
         if !isAllowedToRecordAudio {
             let granted = await audioSession.requestRecordPermission()
             if granted {
+                print("granted yes")
                 return startRecordingInternal(durationProgressHandler)
             }
             return nil

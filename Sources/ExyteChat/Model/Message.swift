@@ -114,11 +114,13 @@ public struct Recording: Codable, Hashable {
     public var duration: Double
     public var waveformSamples: [CGFloat]
     public var url: URL?
+    public var transcribedText: String?
 
-    public init(duration: Double = 0.0, waveformSamples: [CGFloat] = [], url: URL? = nil) {
+    public init(duration: Double = 0.0, waveformSamples: [CGFloat] = [], url: URL? = nil, transcribedText: String? = nil) {
         self.duration = duration
         self.waveformSamples = waveformSamples
         self.url = url
+        self.transcribedText = transcribedText
     }
 }
 

@@ -171,7 +171,8 @@ public struct PttChatView<MessageContent: View, InputViewContent: View>: View {
             HStack {
                 Spacer()
                 Image("waiting", bundle: .current)
-                Text("Waiting for network")
+//                Text("Waiting for network")
+                Text("Waiting for robot")
                 Spacer()
             }
             .padding(.top, 6)
