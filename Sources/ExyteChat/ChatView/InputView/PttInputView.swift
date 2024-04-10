@@ -477,17 +477,21 @@ struct PttInputView: View {
                         .foregroundStyle(.red)
                         .lineLimit(1)
                         .minimumScaleFactor(0.8)
+                        .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .center)
                     
                 } else {
                     Text("Push To Talk")
+                        .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .center)
+                    
                 }
             }
             Spacer()
         }
+        .contentShape(.rect)
         .gesture(
             DragGesture(minimumDistance: 0.0)
                 .onChanged{ _ in
-                    print("holdToRecordStart")
+//                    print("holdToRecordStart")
                     self.holdToRecordStart()
                 }
                 .onEnded { _ in
@@ -495,6 +499,7 @@ struct PttInputView: View {
                     print("end")
                 }
         )
+
     }
     
     var fieldBackgroundColor: Color {

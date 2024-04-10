@@ -12,8 +12,11 @@ final class Recorder {
 
     // duration and waveform samples
     typealias ProgressHandler = (Double, [CGFloat]) -> Void
-
-    private let audioSession = AVAudioSession()
+//    private let audioSession = AVAudioSession()
+    
+    var audioSession: AVAudioSession {
+        AVAudioSession.sharedInstance()
+    }
     private var audioRecorder: AVAudioRecorder?
     private var audioTimer: Timer?
 //    private var sampleRate: Int = 12000
@@ -53,33 +56,38 @@ final class Recorder {
     }
 
     private func startRecordingInternal(_ durationProgressHandler: @escaping ProgressHandler) -> URL? {
-        let settings = [
-//            AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+        let settings: [String: Any] = [
             AVFormatIDKey: configAudioFormat,
             AVSampleRateKey: configSampleRate,
             AVNumberOfChannelsKey: 1,
-            AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
         ]
 
         soundSamples = []
-        let recordingUrl = FileManager.tempAudioFile
+        let recordingUrl = FileManager.tempAudioFile(kAudioFormatLinearPCM ==  configAudioFormat)
 
         do {
+//            try audioSession.setCategory(.record, mode: .default)
             try audioSession.setCategory(.record, mode: .default)
             try audioSession.setActive(true)
             audioRecorder = try AVAudioRecorder(url: recordingUrl, settings: settings)
             audioRecorder?.isMeteringEnabled = true
-            audioRecorder?.record()
+            
+            let startTime: Date = .now
             durationProgressHandler(0.0, [])
-
+//            print("a: \(Date.now.timeIntervalSince(startTime))")
+            audioRecorder?.prepareToRecord()
+//            print("b: \(Date.now.timeIntervalSince(startTime))")
             DispatchQueue.main.async { [weak self] in
                 self?.audioTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
                     self?.onTimer(durationProgressHandler)
+//                    print("d: \(Date.now.timeIntervalSince(startTime))")
                 }
             }
-
+//            print("c: \(Date.now.timeIntervalSince(startTime))")
+            audioRecorder?.record()
             return recordingUrl
-        } catch {
+        } catch(let error) {
+            print("error: \(error)")
             stopRecording()
             return nil
         }

@@ -17,7 +17,7 @@ extension FileManager {
         FileManager.tempDirPath.appendingPathComponent(UUID().uuidString)
     }
 
-    static var tempAudioFile: URL {
-        FileManager.tempDirPath.appendingPathComponent(UUID().uuidString + ".aac")
+    static func tempAudioFile(_ wav: Bool = true) -> URL {
+        FileManager.tempDirPath.appendingPathComponent(UUID().uuidString + (wav ? ".wav": ".aac"))
     }
 }
