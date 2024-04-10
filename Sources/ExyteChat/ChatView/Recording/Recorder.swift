@@ -8,10 +8,32 @@
 import Foundation
 import AVFoundation
 
-final class Recorder {
+
+public typealias ProgressHandler = (Double, [CGFloat]) -> Void
+
+public protocol Recorder {
+    var isAllowedToRecordAudio: Bool {
+        get
+    }
+    
+    var isRecording: Bool {
+        get
+    }
+    
+    func startRecording(durationProgressHandler: @escaping ProgressHandler) async throws -> URL?
+    
+    func stopRecording()
+    
+
+    
+    
+    
+}
+
+final class DefaultRecorder : Recorder  {
 
     // duration and waveform samples
-    typealias ProgressHandler = (Double, [CGFloat]) -> Void
+//    typealias ProgressHandler = (Double, [CGFloat]) -> Void
 //    private let audioSession = AVAudioSession()
     
     var audioSession: AVAudioSession {

@@ -68,7 +68,7 @@ public struct PttChatView<MessageContent: View, InputViewContent: View>: View {
     var chatTitle: String?
     
     @StateObject private var viewModel = ChatViewModel()
-    @StateObject private var inputViewModel = InputViewModel()
+    @StateObject private var inputViewModel: InputViewModel
     @StateObject private var globalFocusState = GlobalFocusState()
     @StateObject private var paginationState = PaginationState()
     @StateObject private var networkMonitor = NetworkMonitor(false)
@@ -90,6 +90,7 @@ public struct PttChatView<MessageContent: View, InputViewContent: View>: View {
     @State private var menuScrollView: UIScrollView?
     
     public init(messages: [Message],
+                recorder: Recorder? = nil,
                 didSendMessage: @escaping (DraftMessage) -> Void,
                 messageBuilder: @escaping MessageBuilderClosure,
                 inputViewBuilder: @escaping InputViewBuilderClosure
@@ -99,6 +100,7 @@ public struct PttChatView<MessageContent: View, InputViewContent: View>: View {
         self.ids = messages.map { $0.id }
         self.messageBuilder = messageBuilder
         self.inputViewBuilder = inputViewBuilder
+        self._inputViewModel = StateObject(wrappedValue: InputViewModel(recorder))
     }
     
     public var body: some View {
@@ -472,33 +474,41 @@ public extension PttChatView {
 public extension PttChatView where MessageContent == EmptyView {
     
     init(messages: [Message],
+         recorder: Recorder?,
          didSendMessage: @escaping (DraftMessage) -> Void,
          inputViewBuilder: @escaping InputViewBuilderClosure) {
         self.didSendMessage = didSendMessage
         self.sections = PttChatView.mapMessages(messages)
         self.ids = messages.map { $0.id }
         self.inputViewBuilder = inputViewBuilder
+        self._inputViewModel = StateObject(wrappedValue: InputViewModel(recorder))
+
     }
 }
 
 public extension PttChatView where InputViewContent == EmptyView {
     
     init(messages: [Message],
+         recorder: Recorder?,
          didSendMessage: @escaping (DraftMessage) -> Void,
          messageBuilder: @escaping MessageBuilderClosure) {
         self.didSendMessage = didSendMessage
         self.sections = PttChatView.mapMessages(messages)
         self.ids = messages.map { $0.id }
         self.messageBuilder = messageBuilder
+        self._inputViewModel = StateObject(wrappedValue: InputViewModel(recorder))
+
     }
 }
 
 public extension PttChatView where MessageContent == EmptyView, InputViewContent == EmptyView {
     
     init(messages: [Message],
+         recorder: Recorder?,
          didSendMessage: @escaping (DraftMessage) -> Void) {
         self.didSendMessage = didSendMessage
         self.sections = PttChatView.mapMessages(messages)
         self.ids = messages.map { $0.id }
+        self._inputViewModel = StateObject(wrappedValue: InputViewModel(recorder))
     }
 }

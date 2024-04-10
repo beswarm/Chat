@@ -69,7 +69,7 @@ public struct ChatView<MessageContent: View, InputViewContent: View>: View {
     var chatTitle: String?
 
     @StateObject private var viewModel = ChatViewModel()
-    @StateObject private var inputViewModel = InputViewModel()
+    @StateObject private var inputViewModel = InputViewModel(nil)
     @StateObject private var globalFocusState = GlobalFocusState()
     @StateObject private var paginationState = PaginationState()
     @StateObject private var networkMonitor = NetworkMonitor()

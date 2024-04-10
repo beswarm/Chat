@@ -20,10 +20,14 @@ final class InputViewModel: ObservableObject {
     var recordingPlayer: RecordingPlayer?
     var didSendMessage: ((DraftMessage) -> Void)?
 
-    private var recorder = Recorder()
+    private var recorder: Recorder
 
     private var recordPlayerSubscription: AnyCancellable?
     private var subscriptions = Set<AnyCancellable>()
+    
+    init(_ recorder: Recorder?) {
+        self.recorder = recorder ?? DefaultRecorder()
+    }
 
     func onStart() {
         subscribeValidation()
