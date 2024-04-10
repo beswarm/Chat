@@ -60,6 +60,10 @@ final class Recorder {
             AVFormatIDKey: configAudioFormat,
             AVSampleRateKey: configSampleRate,
             AVNumberOfChannelsKey: 1,
+//            AVLinearPCMBitDepthKey: 16, // Bit depth
+//                   AVLinearPCMIsFloatKey: false, // Whether audio data is floating point
+//                   AVLinearPCMIsBigEndianKey: false, // Endianness
+            AVLinearPCMIsNonInterleaved: true // Set to true for non-interleaved audio
         ]
 
         soundSamples = []
