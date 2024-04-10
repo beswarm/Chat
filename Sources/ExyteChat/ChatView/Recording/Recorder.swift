@@ -19,7 +19,7 @@ final class Recorder {
 //    private var sampleRate: Int = 12000
     private var configSampleRate: Int = 16000
 //    private var configFormat: Int = kAudioFormatMPEG4AAC
-    private var configAudioFormat: Int = kAudioFormatLinearPCM
+    private var configAudioFormat: Int = Int(kAudioFormatLinearPCM)
 
     private var soundSamples: [CGFloat] = []
 
