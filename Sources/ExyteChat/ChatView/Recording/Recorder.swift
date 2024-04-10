@@ -17,7 +17,9 @@ final class Recorder {
     private var audioRecorder: AVAudioRecorder?
     private var audioTimer: Timer?
 //    private var sampleRate: Int = 12000
-    private var sampleRate: Int = 16000
+    private var configSampleRate: Int = 16000
+//    private var configFormat: Int = kAudioFormatMPEG4AAC
+    private var configAudioFormat: Int = kAudioFormatLinearPCM
 
     private var soundSamples: [CGFloat] = []
 
@@ -52,8 +54,9 @@ final class Recorder {
 
     private func startRecordingInternal(_ durationProgressHandler: @escaping ProgressHandler) -> URL? {
         let settings = [
-            AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
-            AVSampleRateKey: sampleRate,
+//            AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+            AVFormatIDKey: configAudioFormat,
+            AVSampleRateKey: configSampleRate,
             AVNumberOfChannelsKey: 1,
             AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
         ]
