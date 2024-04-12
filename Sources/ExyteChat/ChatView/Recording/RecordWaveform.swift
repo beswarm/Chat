@@ -59,8 +59,10 @@ struct RecordWaveformWithButtons: View {
             }
             .frame(height: 42)
             
-            Text(recording.transcribedText ?? "text not avaiable")
-                .multilineTextAlignment(.leading)
+            if let transcribedText = recording.transcribedText, !transcribedText.isEmpty {
+                Text(transcribedText)
+                    .multilineTextAlignment(.leading)
+            }
        
         }
     }
