@@ -249,7 +249,8 @@ struct MessageView: View {
     func recordingView(_ recording: Recording) -> some View {
         RecordWaveformWithButtons(
             recording: recording,
-            colorButton: message.user.isCurrentUser ? theme.colors.myMessage : .white,
+//            colorButton: message.user.isCurrentUser ? theme.colors.myMessage : .white,
+            colorButton: theme.colors.messageTextColor ?? (message.user.isCurrentUser ? theme.colors.myMessage : .white),
 //            colorButtonBg: message.user.isCurrentUser ? .white : theme.colors.myMessage,
             colorButtonBg: theme.colors.recordingPlayBtnColor ?? (message.user.isCurrentUser ? .white : theme.colors.myMessage),
 //            colorWaveform: message.user.isCurrentUser ? theme.colors.textDarkContext : theme.colors.textLightContext
