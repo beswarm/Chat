@@ -124,10 +124,6 @@ struct MessageView: View {
                 attachmentsView(message)
             }
 
-            if !message.text.isEmpty {
-                textWithTimeView(message)
-                    .font(Font(font))
-            }
 
             if let recording = message.recording {
                 VStack(alignment: .trailing, spacing: 8) {
@@ -136,6 +132,9 @@ struct MessageView: View {
                         .padding(.bottom, 8)
                         .padding(.trailing, 12)
                 }
+            } else if !message.text.isEmpty {
+                textWithTimeView(message)
+                    .font(Font(font))
             }
         }
         .bubbleBackground(message, theme: theme)
