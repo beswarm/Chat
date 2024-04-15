@@ -52,6 +52,9 @@ public struct ChatTheme {
         public var sendButtonBackground: Color
 
         public var myMessage: Color
+        public var recordingPlayBtnColor: Color? = nil
+        public var messageTextColor: Color? = nil
+        
         public var friendMessage: Color
 
         public var textLightContext: Color
@@ -74,7 +77,9 @@ public struct ChatTheme {
             textLightContext: Color = Color.black,
             textDarkContext: Color = Color.white,
             textMediaPicker: Color = Color(hex: "818C99"),
-            recordDot: Color = Color(hex: "F62121")
+            recordDot: Color = Color(hex: "F62121"),
+            recordingPlayBtnColor: Color? = nil,
+            messageTextColor: Color? = nil
         ) {
             self.grayStatus = grayStatus
             self.errorStatus = errorStatus
@@ -90,6 +95,8 @@ public struct ChatTheme {
             self.textDarkContext = textDarkContext
             self.textMediaPicker = textMediaPicker
             self.recordDot = recordDot
+            self.recordingPlayBtnColor = recordingPlayBtnColor
+            self.messageTextColor = messageTextColor
         }
     }
 

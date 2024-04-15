@@ -487,6 +487,7 @@ struct PttInputView: View {
             }
             Spacer()
         }
+        .background(theme.colors.buttonBackground)
         .contentShape(.rect)
         .gesture(
             DragGesture(minimumDistance: 0.0)

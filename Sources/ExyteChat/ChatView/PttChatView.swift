@@ -175,6 +175,7 @@ public struct PttChatView<MessageContent: View, InputViewContent: View>: View {
                 Image("waiting", bundle: .current)
 //                Text("Waiting for network")
                 Text("Waiting for robot")
+                    .foregroundStyle(.white)
                 Spacer()
             }
             .padding(.top, 6)

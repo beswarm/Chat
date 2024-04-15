@@ -250,8 +250,10 @@ struct MessageView: View {
         RecordWaveformWithButtons(
             recording: recording,
             colorButton: message.user.isCurrentUser ? theme.colors.myMessage : .white,
-            colorButtonBg: message.user.isCurrentUser ? .white : theme.colors.myMessage,
-            colorWaveform: message.user.isCurrentUser ? theme.colors.textDarkContext : theme.colors.textLightContext
+//            colorButtonBg: message.user.isCurrentUser ? .white : theme.colors.myMessage,
+            colorButtonBg: theme.colors.recordingPlayBtnColor ?? (message.user.isCurrentUser ? .white : theme.colors.myMessage),
+//            colorWaveform: message.user.isCurrentUser ? theme.colors.textDarkContext : theme.colors.textLightContext
+            colorWaveform: theme.colors.messageTextColor ?? (message.user.isCurrentUser ? theme.colors.textDarkContext : theme.colors.textLightContext)
         )
         .padding(.horizontal, MessageView.horizontalTextPadding)
         .padding(.top, 8)
@@ -308,7 +310,8 @@ struct MessageView_Preview: PreviewProvider {
             Attachment.randomImage(),
             Attachment.randomImage(),
             Attachment.randomImage(),
-        ]
+        ],
+        recording: .init()
     )
 
     static private var message = Message(

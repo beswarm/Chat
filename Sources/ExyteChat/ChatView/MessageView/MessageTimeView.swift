@@ -12,8 +12,10 @@ struct MessageTimeView: View {
     var body: some View {
         Text(text)
             .font(.caption)
-            .foregroundColor(isCurrentUser ? .white : .black)
-            .opacity(0.4)
+//            .foregroundColor(isCurrentUser ? .white : .black)
+            .foregroundStyle(.white)
+//            .opacity(0.4)
+            .opacity(0.8)
     }
 }
 
